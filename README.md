@@ -35,6 +35,6 @@ python population_script.py
 ## Estrutura do Projeto
 
 * `docker-compose.yml`: Infraestrutura do banco.
-* `popular_banco.py`: Script de população (lê configurações do .env).
+* `population_script.py`: Script de população (lê configurações do .env).
 * `BD_schema.sql`: Script DDL.
 * `.env`: Arquivo de configuração local (Ignorado pelo Git).
