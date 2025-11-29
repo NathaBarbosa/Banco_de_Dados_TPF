@@ -1,86 +1,87 @@
-🚀 Guia Rápido de Execução — Trabalho Prático IBD
+Trabalho Prático IBD - População de Banco de Dados
 
-Este projeto cria e popula um banco de dados MySQL usando Docker + Python.
-Ele contém:
+🚀 Guia Rápido de Execução
 
-Um script de infraestrutura Docker para subir o banco.
+Este projeto cria e popula um banco de dados MySQL para um serviço de Streaming de Vídeo usando Docker + Python. O projeto contempla:
 
-Um script de população automática com dados sintéticos.
+Infraestrutura Docker para o SGBD.
 
-Arquivos de configuração para controle seguro das credenciais.
+Script de população automática com dados sintéticos realistas (Faker).
 
-Um script SQL com o esquema do banco.
+Configuração segura de credenciais.
 
-Após seguir os passos, você terá o banco configurado e pronto para consultas no MySQL Workbench.
+Consultas SQL analíticas.
 
 📦 Dependências
 
-O projeto utiliza as seguintes bibliotecas Python:
+O projeto foi testado com as seguintes versões (listadas no requirements.txt):
+
 mysql-connector-python==9.5.0
+
 python-dotenv==1.2.1
+
 Faker>=30.0.0
+
 tqdm>=4.67.0
 
-
 📁 Estrutura do Projeto
+
 📦 Trabalho_IBD
 │
-├── docker-compose.yml       # Sobe a infraestrutura do banco (MySQL)
-├── population_script.py     # Script em Python para gerar dados
-├── BD_schema.sql            # Estrutura do banco (DDL)
-├── .env.example             # Modelo de variáveis de ambiente
-├── .env   (criado pelo usuário)
-└── requirements.txt         # Dependências Python
+├── docker-compose.yml      # Sobe a infraestrutura do banco (MySQL)
+├── population_script.py    # Script Python para gerar e inserir dados
+├── BD_schema.sql           # Script SQL com a estrutura do banco (DDL)
+├── requirements.txt        # Lista de bibliotecas Python
+├── .env.example            # Modelo de variáveis de ambiente (público)
+└── .env                    # Suas senhas reais (privado/ignorado pelo Git)
 
-🔐 Arquivo .env — Configuração de Segurança
 
-Antes de qualquer execução, configure o ambiente:
+🔐 Configuração de Segurança (.env)
 
-Localize o arquivo: .env.example
+Este projeto usa variáveis de ambiente para não expor senhas no código. Antes de rodar, configure o ambiente:
 
-Faça uma cópia com o nome: .env
+Localize o arquivo .env.example.
 
-Preencha as variáveis nele (password, porta, usuário etc.).
+Faça uma cópia dele e renomeie para .env.
 
-⚠️ O .env não vai para o Git, garantindo segurança das credenciais.
+Preencha as variáveis (senha, porta, usuário).
 
-Exemplo comum de conteúdo:
+Exemplo de conteúdo do .env:
 
 MYSQL_ROOT_PASSWORD=root
 MYSQL_USER=aluno
 MYSQL_PASSWORD=aluno123
 MYSQL_DATABASE=trabalho_ibd
-MYSQL_PORT=3306
+MYSQL_PORT=3307
 
-🐳 Subindo o Banco com Docker
-1️⃣ Abra o Docker Desktop
 
-Certifique-se de que ele está rodando antes de continuar.
+⚠️ Nota: O arquivo .env não é enviado para o Git por segurança.
 
-2️⃣ No terminal, na pasta do projeto, execute:
+🐳 Passo 1: Subindo o Banco com Docker
+
+Certifique-se de ter o Docker Desktop instalado e rodando.
+
+Abra o terminal na pasta do projeto.
+
+Execute o comando:
+
 docker-compose up -d
 
 
-Esse comando:
-
-Baixa a imagem do MySQL (se necessário)
-
-Cria o container do banco
-
-Carrega as variáveis do .env
+Este comando baixa a imagem do MySQL e cria o container em segundo plano.
 
 Verificar Status
+
+Para confirmar se o banco subiu, rode:
+
 docker ps
 
 
-Se aparecer algo como:
+Você deve ver o container trabalho_ibd_mysql com status Up.
 
-trabalho_ibd_mysql   Up   3306->3306
+🧠 Passo 2: Populando o Banco com Python
 
-
-➡️ Tudo certo!
-
-🧠 Populando o Banco com Python
+Com o banco rodando, execute o script de população. Ele irá criar as tabelas (baseado no BD_schema.sql) e inserir os dados falsos.
 
 Instale as dependências:
 
@@ -92,34 +93,42 @@ Execute o script:
 python population_script.py
 
 
-Isso irá:
+Aguarde a barra de progresso finalizar. Se tudo der certo, você verá a mensagem de sucesso.
 
-Ler o arquivo .env
+🛠 Passo 3: Acessando via MySQL Workbench
 
-Conectar ao banco
+Agora você pode visualizar os dados e rodar as consultas.
 
-Popular com dados sintéticos
+Abra o MySQL Workbench.
 
-🛠 Acessando via MySQL Workbench
+Clique no (+) ao lado de "MySQL Connections".
 
-Abra o MySQL Workbench → Clique em New Connection.
+Configure com os dados do seu .env:
 
-Configure usando os dados definidos no .env:
+Campo
 
-Campo	Valor
-Host	localhost
-Port	(verifique no .env — geralmente 3306 ou 3307)
-User	aluno (ou definido no .env)
-Password	A senha do .env
-Database	trabalho_ibd (caso queira definir durante conexão)
+Valor
 
-Teste a conexão.
-Se funcionar → salve.
+Hostname
 
-Após esses passos, o banco estará:
+localhost
 
-✔ Criado
-✔ Populado
-✔ Disponível para consultas no MySQL Workbench
+Port
 
-Agora você pode executar queries, verificar tabelas e trabalhar normalmente.
+3307 (ou a porta definida no seu .env)
+
+Username
+
+aluno
+
+Password
+
+Clique em Store in Vault e digite sua senha
+
+Teste a conexão e clique em OK.
+
+🔍 Solução de Problemas Comuns
+
+Erro de conexão no Python: Verifique se a porta no .env é a mesma que o Docker está usando (docker ps).
+
+Erro "Port already allocated": Mude a porta no .env para 3308 ou 3309 e reinicie o Docker.
