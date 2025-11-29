@@ -1,4 +1,4 @@
-*
+
 
 # Trabalho Prático IBD - População de Banco de Dados
 
