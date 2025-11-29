@@ -6,7 +6,7 @@ Este projeto implementa o ambiente de banco de dados e os scripts de geração d
 
 Este projeto utiliza variáveis de ambiente para não expor senhas no código. Antes de rodar, siga os passos:
 
-1. Localize o arquivo `.env.example`.
+1. Localize o arquivo `.env.examplo`.
 2. Faça uma cópia dele e renomeie para `.env`.
 3. (Opcional) Edite o arquivo `.env` com as senhas que desejar.
 
@@ -29,12 +29,12 @@ O script Python também foi configurado para ler o mesmo arquivo `.env`.
 pip install -r requirements.txt
 
 # Execute o script
-python popular_banco.py
+python population_script.py
 ```
 
 ## Estrutura do Projeto
 
 * `docker-compose.yml`: Infraestrutura do banco.
 * `popular_banco.py`: Script de população (lê configurações do .env).
-* `schema.sql`: Script DDL.
+* `BD_schema.sql`: Script DDL.
 * `.env`: Arquivo de configuração local (Ignorado pelo Git).
