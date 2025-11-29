@@ -36,19 +36,22 @@ def criar_conexao():
 
 def resetar_banco(cursor):
     print("Recriando tabelas...")
-    try:
-        with open('BD_schema.sql', 'r', encoding='utf-8') as f:
-            sql_file = f.read()
-            commands = sql_file.split(';')
-            for command in tqdm(commands, desc="DDL"):
-                if command.strip():
-                    try:
-                        cursor.execute(command)
-                    except Error as e:
-                        print(f"Erro SQL (ignorado): {e}")
-    except FileNotFoundError:
-        print("ERRO: Arquivo 'schema.sql' não encontrado na pasta.")
+    nome_arquivo = 'BD_schema.sql' 
+    
+    if not os.path.exists(nome_arquivo):
+        print(f"ERRO CRÍTICO: O arquivo '{nome_arquivo}' não foi encontrado!")
+        print("O script será encerrado para evitar erros em cascata.")
+        exit() # Para o script aqui mesmo se não achar o arquivo
 
+    with open(nome_arquivo, 'r', encoding='utf-8') as f:
+        sql_file = f.read()
+        commands = sql_file.split(';')
+        for command in tqdm(commands, desc="DDL"):
+            if command.strip():
+                try:
+                    cursor.execute(command)
+                except Error as e:
+                    print(f"Erro SQL (ignorado): {e}")
 # --- Funções de População (Sementes) ---
 
 def popular_planos(cursor):
@@ -227,7 +230,7 @@ def main():
             
             conn.commit()
             print("\n" + "="*50)
-            print(" SUCESSO! Banco de dados populado com dados falsos. 🎬")
+            print(" SUCESSO! Banco de dados populado com dados falsos.")
             print("="*50)
             
         except Exception as e:
