@@ -37,7 +37,7 @@ def criar_conexao():
 def resetar_banco(cursor):
     print("Recriando tabelas...")
     try:
-        with open('schema.sql', 'r', encoding='utf-8') as f:
+        with open('BD_schema.sql', 'r', encoding='utf-8') as f:
             sql_file = f.read()
             commands = sql_file.split(';')
             for command in tqdm(commands, desc="DDL"):
