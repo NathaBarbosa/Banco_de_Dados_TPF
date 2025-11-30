@@ -114,7 +114,7 @@ Agora você pode visualizar os dados e rodar as consultas.
 * **Erro de conexão no Python:** Verifique se a porta no `.env` é a mesma que o Docker está usando (`docker ps`).
 * **Erro "Port already allocated":** Mude a porta no `.env` para `3308` ou `3309` e reinicie o Docker.
 
-##Alunos Autores
+## Alunos Autores
 
 - Yago Lobato — yagobrlobato@icomp.ufam.edu.br  
 - Nathã Barbosa — NathaBarbosa@icomp.ufam.edu.br  
