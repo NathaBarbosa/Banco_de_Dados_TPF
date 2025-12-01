@@ -55,7 +55,7 @@ def resetar_banco(cursor):
 def inserir_em_lotes(cursor, sql, dados, tamanho_lote=5000, descricao="Inserindo"):
     """Função para inserir grandes quantidades de dados em pedaços menores com barra de progresso"""
     total = len(dados)
-    # Adicionei tqdm aqui para visualizar a inserção no banco
+   
     for i in tqdm(range(0, total, tamanho_lote), desc=f"{descricao}", leave=False):
         lote = dados[i:i + tamanho_lote]
         cursor.executemany(sql, lote)
@@ -230,7 +230,7 @@ def popular_clientes(cursor, qtd):
         pais = choice(list(PAISES_LOCAIS.keys()))
         # Define o Faker com o locale adequado
         fake_local = Faker(PAISES_LOCAIS[pais])
-        cpf = gerar_cpf()  # mantém CPF gerado no padrão BR
+        cpf = gerar_cpf()  
         cpfs_gerados.append(cpf)
         nome = fake_local.name()
         email = f"{fake_local.user_name()}_{random.randint(1,999)}@email.com"
