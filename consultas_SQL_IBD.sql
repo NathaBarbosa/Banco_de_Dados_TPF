@@ -67,18 +67,26 @@ WHERE NOT EXISTS (
 -- --------------------------------------------------------------
 SELECT 
     f.titulo,
+    -- Conta quantas sessões existem para este filme no período
     COUNT(s.data_hora_inicio) AS total_visualizacoes,
+    -- Soma a duração das sessões (se for NULL, retorna 0)
     COALESCE(SUM(s.duracao_sessao), 0) AS total_minutos
 FROM Filme f
-JOIN Disponibilidade_Filme df ON f.ID_filme = df.ID_filme
-JOIN Catalogo_Regional cr ON df.ID_Catalogo = cr.ID_Catalogo
-JOIN Regiao r ON cr.ID_regiao = r.ID_regiao
+
+JOIN (
+    SELECT DISTINCT df.ID_filme
+    FROM Disponibilidade_Filme df
+    JOIN Catalogo_Regional cr ON df.ID_Catalogo = cr.ID_Catalogo
+    JOIN Regiao r ON cr.ID_regiao = r.ID_regiao
+    WHERE r.Pais = 'Brasil' -- Troque 'Brasil' pela Região Y desejada
+) filmes_na_regiao ON f.ID_filme = filmes_na_regiao.ID_filme
+-- 2. Agora fazemos o LEFT JOIN limpo com as sessões filtradas por data
 LEFT JOIN Sessao_Visualizacao s 
     ON f.ID_filme = s.ID_filme 
-    AND s.data_hora_inicio BETWEEN '2025-11-01' AND '2025-11-30'
-WHERE r.Pais = 'Brasil'
-GROUP BY f.ID_filme, f.titulo;
-
+    AND s.data_hora_inicio >= '2025-11-01 00:00:00' 
+    AND s.data_hora_inicio <= '2025-11-30 23:59:59' -- Filtro do mês M/AAAA
+GROUP BY f.ID_filme, f.titulo
+ORDER BY total_visualizacoes DESC;
 
 -- --------------------------------------------------------------
 -- 6. Consumo por Gênero
