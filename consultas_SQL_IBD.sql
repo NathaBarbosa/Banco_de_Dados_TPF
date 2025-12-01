@@ -67,24 +67,21 @@ WHERE NOT EXISTS (
 -- --------------------------------------------------------------
 SELECT 
     f.titulo,
-    -- Conta quantas sessões existem para este filme no período
     COUNT(s.data_hora_inicio) AS total_visualizacoes,
-    -- Soma a duração das sessões (se for NULL, retorna 0)
-    COALESCE(SUM(s.duracao_sessao), 0) AS total_minutos
+    COALESCE(SUM(s.duracao_sessao), 0) AS total_minutos_assistidos
 FROM Filme f
-
 JOIN (
     SELECT DISTINCT df.ID_filme
     FROM Disponibilidade_Filme df
     JOIN Catalogo_Regional cr ON df.ID_Catalogo = cr.ID_Catalogo
     JOIN Regiao r ON cr.ID_regiao = r.ID_regiao
-    WHERE r.Pais = 'Brasil' -- Troque 'Brasil' pela Região Y desejada
-) filmes_na_regiao ON f.ID_filme = filmes_na_regiao.ID_filme
--- 2. Agora fazemos o LEFT JOIN limpo com as sessões filtradas por data
+    WHERE r.Pais = 'Brasil'
+) filmes_brasil ON f.ID_filme = filmes_brasil.ID_filme
 LEFT JOIN Sessao_Visualizacao s 
     ON f.ID_filme = s.ID_filme 
-    AND s.data_hora_inicio >= '2025-11-01 00:00:00' 
-    AND s.data_hora_inicio <= '2025-11-30 23:59:59' -- Filtro do mês M/AAAA
+    -- AJUSTE AQUI: Mudado para pegar DEZEMBRO ou o ano todo
+    AND s.data_hora_inicio >= '2025-12-01 00:00:00' 
+    AND s.data_hora_inicio <= '2025-12-31 23:59:59'
 GROUP BY f.ID_filme, f.titulo
 ORDER BY total_visualizacoes DESC;
 
