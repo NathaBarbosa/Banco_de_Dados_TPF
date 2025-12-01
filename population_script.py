@@ -233,7 +233,7 @@ def popular_clientes(cursor, qtd):
         cpf = gerar_cpf()  
         cpfs_gerados.append(cpf)
         nome = fake_local.name()
-        email = f"{fake_local.user_name()}_{random.randint(1,999)}@email.com"
+        email = f"{fake_local.user_name()}_{random.randint(1,999)}.{random.randint(1,999)}@email.com" 
         nasc = fake_local.date_of_birth(minimum_age=16, maximum_age=70)
         cadastro = fake_local.date_between(start_date='-5y', end_date='today')
         dados.append((cpf, nome, email, nasc, pais, cadastro))
@@ -274,11 +274,25 @@ def popular_associativas_e_historico(cursor, cpfs):
         regiao = choice(ids_regiao) 
         residencia_data.append((cpf, regiao, fake.date_between(start_date='-3y')))
 
-        if random.random() > 0.10: # 90% assinam
-            plano = choice(ids_plano)
-            inicio = fake.date_between(start_date='-2y')
-            fim = fake.date_between(start_date=inicio) if random.random() < 0.25 else None
-            assinatura_data.append((cpf, plano, inicio, fim))
+        if random.random() > 0.10:  # 90% assinam
+            plano_atual = choice(ids_plano)
+            inicio = fake.date_between(start_date='-2y', end_date='-6m')
+
+            # Primeira assinatura
+            assinatura_data.append((cpf, plano_atual, inicio, None))
+
+            # 30% dos clientes trocam de plano pelo menos uma vez
+            if random.random() < 0.30:
+                fim = fake.date_between(start_date=inicio, end_date='-3m')
+                
+                # Atualiza a primeira assinatura com data de término
+                assinatura_data[-1] = (cpf, plano_atual, inicio, fim)
+
+                # Novo plano diferente do primeiro
+                novo_plano = choice([p for p in ids_plano if p != plano_atual])
+                novo_inicio = fim  # começa exatamente quando o outro termina
+
+                assinatura_data.append((cpf, novo_plano, novo_inicio, None))
 
     inserir_em_lotes(cursor, "INSERT INTO Regiao_residencia (CPF, ID_regiao, data_registro) VALUES (%s, %s, %s)", residencia_data, descricao="Residências")
     inserir_em_lotes(cursor, "INSERT INTO Assina_Historico (CPF_cliente, ID_plano, data_inicio, data_termino) VALUES (%s, %s, %s, %s)", assinatura_data, descricao="Assinaturas")
