@@ -26,7 +26,7 @@ SELECT f.titulo, pc.data_interacao
 FROM Filme f
 JOIN Preferencia_Cliente pc ON f.ID_filme = pc.ID_filme
 JOIN Cliente c ON pc.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Fulano de Tal'
+WHERE c.nome_completo = 'Lucca Fonseca'
   AND pc.favorito_bool = TRUE
 ORDER BY pc.data_interacao DESC;
 
