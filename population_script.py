@@ -357,13 +357,12 @@ def main():
             popular_catalogos(cursor)
             
             # Dados Volumosos (Escalados para realismo)
-            # 1.000 Filmes (Catálogo decente)
+            
             popular_filmes(cursor, qtd=1000)
             
-            # 3.000 Clientes (Base sólida para gerar histórico)
             cpfs = popular_clientes(cursor, qtd=3000)
             
-            # Isso vai gerar aprox 30.000 sessões de visualização
+            
             popular_associativas_e_historico(cursor, cpfs)
             
             conn.commit()
