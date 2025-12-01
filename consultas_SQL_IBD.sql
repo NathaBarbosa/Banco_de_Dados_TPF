@@ -26,7 +26,7 @@ SELECT f.titulo, pc.data_interacao
 FROM Filme f
 JOIN Preferencia_Cliente pc ON f.ID_filme = pc.ID_filme
 JOIN Cliente c ON pc.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Lucca Fonseca'
+WHERE c.nome_completo = 'Anne Chen'
   AND pc.favorito_bool = TRUE
 ORDER BY pc.data_interacao DESC;
 
@@ -93,15 +93,18 @@ ORDER BY total_visualizacoes DESC;
 -- O que faz: Calcular o total de horas que o cliente "Fulano de Tal" 
 -- passou assistindo conteúdo em 2025, agrupado por gênero.
 -- --------------------------------------------------------------
+
 SELECT 
     f.genero,
-    ROUND(SUM(s.duracao_sessao) / 60, 2) AS total_horas
+    -- Soma os minutos e divide por 60 para obter horas, arredondando para 2 casas decimais
+    ROUND(SUM(s.duracao_sessao) / 60, 2) AS total_horas_assistidas
 FROM Sessao_Visualizacao s
 JOIN Filme f ON s.ID_filme = f.ID_filme
 JOIN Cliente c ON s.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Fulano de Tal'
-  AND s.data_hora_inicio BETWEEN '2025-01-01' AND '2025-12-31'
-GROUP BY f.genero;
+WHERE c.nome_completo = 'Anne Chen' -- Substitua pelo nome do cliente "X"
+  AND s.data_hora_inicio BETWEEN '2025-01-01 00:00:00' AND '2025-12-31 23:59:59' -- Período informado
+GROUP BY f.genero
+ORDER BY total_horas_assistidas DESC;
 
 
 -- --------------------------------------------------------------
@@ -155,11 +158,11 @@ SELECT
         SELECT COUNT(*) 
         FROM Sessao_Visualizacao s2 
         JOIN Cliente c2 ON s2.CPF_cliente = c2.CPF 
-        WHERE c2.nome_completo = 'Fulano de Tal'
+        WHERE c2.nome_completo = 'Anne Chen'
     )) AS percentual
 FROM Sessao_Visualizacao s
 JOIN Cliente c ON s.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Fulano de Tal'
+WHERE c.nome_completo = 'Anne Chen'
 GROUP BY s.qualidade_reproducao;
 
 
