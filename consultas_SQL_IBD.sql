@@ -1,7 +1,7 @@
 -- ==============================================================
 -- CONSULTAS ANALÍTICAS (DML) - TRABALHO IBD
 -- ==============================================================
--- ATENÇÃO!!!!!  Substitua os "nome" nas consultas  apar algum nome de cliente válido com o "SELECT * FROM CLIENTE;" 
+-- ATENÇÃO!!!!!  Substitua os "nomes" nas consultas  por algum nome de cliente válido com o "SELECT * FROM CLIENTE;" 
 -- --------------------------------------------------------------
 -- 1. Disponibilidade Regional
 -- O que faz: Lista os títulos distintos de todos os filmes que estão 
