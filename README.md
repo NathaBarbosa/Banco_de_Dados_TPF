@@ -29,6 +29,7 @@ O projeto foi testado com as seguintes versões (listadas no `requirements.txt`)
 ├── population_script.py    # Script Python para gerar e inserir dados
 ├── BD_schema.sql           # Script SQL com a estrutura do banco (DDL)
 ├── requirements.txt        # Lista de bibliotecas Python
+├── consultas_SQL_IBD.sql
 ├── .env.example            # Modelo de variáveis de ambiente (público)
 └── .env                    # Suas senhas reais (privado/ignorado pelo Git)
 ```
