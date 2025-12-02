@@ -26,7 +26,7 @@ SELECT f.titulo, pc.data_interacao
 FROM Filme f
 JOIN Preferencia_Cliente pc ON f.ID_filme = pc.ID_filme
 JOIN Cliente c ON pc.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Anne Chen'
+WHERE c.nome_completo = 'Noah Bains'
   AND pc.favorito_bool = TRUE
 ORDER BY pc.data_interacao DESC;
 
@@ -98,7 +98,7 @@ SELECT
 FROM Sessao_Visualizacao s
 JOIN Filme f ON s.ID_filme = f.ID_filme
 JOIN Cliente c ON s.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Anne Chen' -- Substitua pelo nome do cliente "X"
+WHERE c.nome_completo = 'Noah Bains' -- Substitua pelo nome do cliente "X"
   AND s.data_hora_inicio BETWEEN '2025-01-01 00:00:00' AND '2025-12-31 23:59:59' -- Período informado
 GROUP BY f.genero
 ORDER BY total_horas_assistidas DESC;
@@ -155,11 +155,11 @@ SELECT
         SELECT COUNT(*) 
         FROM Sessao_Visualizacao s2 
         JOIN Cliente c2 ON s2.CPF_cliente = c2.CPF 
-        WHERE c2.nome_completo = 'Anne Chen'
+        WHERE c2.nome_completo = 'Noah Bains'
     )) AS percentual
 FROM Sessao_Visualizacao s
 JOIN Cliente c ON s.CPF_cliente = c.CPF
-WHERE c.nome_completo = 'Anne Chen'
+WHERE c.nome_completo = 'Noah Bains'
 GROUP BY s.qualidade_reproducao;
 
 
